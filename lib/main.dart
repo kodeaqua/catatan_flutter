@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:ngabuburit3/screens/add.dart';
 import 'package:ngabuburit3/screens/home.dart';
+import 'package:ngabuburit3/screens/edit.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
 ThemeData materialTheme({required bool darkmode}) {
+  ThemeData baseTheme = ThemeData(
+    useMaterial3: true,
+  );
   return darkmode
-      ? ThemeData.dark(useMaterial3: true)
-      : ThemeData.light(useMaterial3: true); // #1 kudu difix
+      ? baseTheme.copyWith(brightness: Brightness.dark)
+      : baseTheme.copyWith(brightness: Brightness.light);
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +29,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const HomeScreen(),
-        '/add': (context) => const AddNoteScreen()
+        '/add': (context) => const AddNoteScreen(),
+        '/edit': (context) => const EditNoteScreen()
       },
       initialRoute: '/',
     );

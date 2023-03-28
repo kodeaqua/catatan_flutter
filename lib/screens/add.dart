@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ngabuburit3/helpers/sqflite.dart';
+import 'package:ngabuburit3/helpers/database.dart';
+import 'package:ngabuburit3/models/catatan.dart';
+import 'package:sqflite/sqflite.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({super.key});
@@ -86,12 +88,19 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Catatan disimpan")),
             );
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/'); // Bug #1
+            await DatabaseHelper.instance.add(
+              Catatan(
+                title: _titleController.text,
+                body: _bodyController.text,
+                timestamp: DateTime.now().toString(),
+              ),
+            );
           }
         },
         label: Row(
